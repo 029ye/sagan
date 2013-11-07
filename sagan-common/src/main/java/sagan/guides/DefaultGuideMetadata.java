@@ -1,5 +1,10 @@
 package sagan.guides;
 
+import lombok.Data;
+
+import static java.lang.String.format;
+
+@Data
 public class DefaultGuideMetadata implements GuideMetadata {
 
     private final static String REPO_ZIP_URL = "https://github.com/%s/%s/archive/master.zip";
@@ -10,12 +15,21 @@ public class DefaultGuideMetadata implements GuideMetadata {
     private final static String CI_STATUS_IMAGE_URL = "https://drone.io/github.com/%s/%s/status.png";
     private final static String CI_LATEST_URL = "https://drone.io/github.com/%s/%s/latest";
 
-    public final String ghOrgName;
-    public final String guideId;
-    public final String repoName;
-    public final String description;
-    public final String title;
-    public final String subtitle;
+    private final String ghOrgName;
+    private final String guideId;
+    private final String repoName;
+    private final String description;
+
+    private final String title;
+    private final String subtitle;
+
+    private final String gitRepoHttpsUrl;
+    private final String githubHttpsUrl;
+    private final String zipUrl;
+    private final String gitRepoSshUrl;
+    private final String gitRepoSubversionUrl;
+    private final String ciStatusImageUrl;
+    private final String ciLatestUrl;
 
     public DefaultGuideMetadata(String ghOrgName, String guideId, String repoName, String description) {
         this.ghOrgName = ghOrgName;
@@ -26,54 +40,15 @@ public class DefaultGuideMetadata implements GuideMetadata {
         String[] split = description.split("::", 2);
         title = split[0].trim();
         subtitle = (split.length > 1) ? split[1].trim() : "";
+
+        gitRepoHttpsUrl = format(REPO_HTTPS_URL, ghOrgName, repoName);
+        githubHttpsUrl = format(GITHUB_HTTPS_URL, ghOrgName, repoName);
+        zipUrl = format(REPO_ZIP_URL, ghOrgName, repoName);
+        gitRepoSshUrl = format(REPO_SSH_URL, ghOrgName, repoName);
+        gitRepoSubversionUrl = format(REPO_SUBVERSION_URL, ghOrgName, repoName);
+        ciStatusImageUrl = format(CI_STATUS_IMAGE_URL, ghOrgName, repoName);
+        ciLatestUrl = format(CI_LATEST_URL, ghOrgName, repoName);
     }
 
-    public String getGuideId() {
-        return guideId;
-    }
-
-    public String getRepoName() {
-        return repoName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getSubtitle() {
-        return subtitle;
-    }
-
-    public String getGitRepoHttpsUrl() {
-        return String.format(REPO_HTTPS_URL, ghOrgName, repoName);
-    }
-
-    public String getGithubHttpsUrl() {
-        return String.format(GITHUB_HTTPS_URL, ghOrgName, repoName);
-    }
-
-    public String getZipUrl() {
-        return String.format(REPO_ZIP_URL, ghOrgName, repoName);
-    }
-
-    public String getGitRepoSshUrl() {
-        return String.format(REPO_SSH_URL, ghOrgName, repoName);
-    }
-
-    public String getGitRepoSubversionUrl() {
-        return String.format(REPO_SUBVERSION_URL, ghOrgName, repoName);
-    }
-
-    public String getCiStatusImageUrl() {
-        return String.format(CI_STATUS_IMAGE_URL, ghOrgName, repoName);
-    }
-
-    public String getCiLatestUrl() {
-        return String.format(CI_LATEST_URL, ghOrgName, repoName);
-    }
 
 }

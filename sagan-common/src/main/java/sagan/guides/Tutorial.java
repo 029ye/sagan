@@ -1,5 +1,8 @@
 package sagan.guides;
 
+import lombok.Data;
+
+@Data
 public class Tutorial extends AbstractGuide {
 
     private final int page;
@@ -12,10 +15,6 @@ public class Tutorial extends AbstractGuide {
                     int page) {
         super(metadata, contentProvider, imageProvider);
         this.page = page;
-    }
-
-    public int getPage() {
-        return page;
     }
 
 }

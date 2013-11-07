@@ -1,24 +1,16 @@
 package sagan.guides;
 
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
 import org.springframework.util.Assert;
 
+@RequiredArgsConstructor
 class AbstractDocument implements Document {
 
     private final ContentProvider contentProvider;
-    private String content;
-    private String sidebar;
-
-    public AbstractDocument(ContentProvider contentProvider) {
-        this.contentProvider = contentProvider;
-    }
-
-    public void setContent(String body) {
-        content = body;
-    }
-
-    public void setSidebar(String sidebar) {
-        this.sidebar = sidebar;
-    }
+    @Setter private String content;
+    @Setter private String sidebar;
 
     public String getContent() {
         if (content == null) {

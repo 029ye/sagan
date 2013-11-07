@@ -3,8 +3,10 @@ package sagan.projects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import lombok.Data;
 import org.springframework.util.Assert;
 
+@Data
 public class ProjectRelease implements Comparable<ProjectRelease> {
 
     private static final Pattern VERSION_DISPLAY_REGEX = Pattern.compile("([0-9.]+)\\.(RC\\d+|M\\d+)?");
@@ -26,29 +28,26 @@ public class ProjectRelease implements Comparable<ProjectRelease> {
         }
     }
 
-    private final String versionName;
+    private final String version;
     private final ReleaseStatus releaseStatus;
-    private final boolean isCurrent;
     private final String refDocUrl;
     private final String apiDocUrl;
     private final String groupId;
     private final String artifactId;
-    private final ProjectRepository repository;
 
-    public ProjectRelease(String versionName, ReleaseStatus releaseStatus, boolean isCurrent, String refDocUrl,
+    private final transient boolean current;
+    private final transient ProjectRepository repository;
+
+    public ProjectRelease(String version, ReleaseStatus releaseStatus, boolean current, String refDocUrl,
                           String apiDocUrl, String groupId, String artifactId) {
-        this.versionName = versionName;
+        this.version = version;
         this.releaseStatus = releaseStatus;
-        this.isCurrent = isCurrent;
         this.refDocUrl = refDocUrl;
         this.apiDocUrl = apiDocUrl;
         this.groupId = groupId;
         this.artifactId = artifactId;
-        repository = ProjectRepository.get(versionName);
-    }
-
-    public boolean isCurrent() {
-        return isCurrent;
+        this.current = current;
+        repository = ProjectRepository.get(version);
     }
 
     public boolean isGeneralAvailability() {
@@ -63,20 +62,12 @@ public class ProjectRelease implements Comparable<ProjectRelease> {
         return releaseStatus == ReleaseStatus.SNAPSHOT;
     }
 
-    public ReleaseStatus getReleaseStatus() {
-        return releaseStatus;
-    }
-
-    public String getVersion() {
-        return versionName;
-    }
-
     public String getVersionDisplayName() {
         return getVersionDisplayName(true);
     }
 
     public String getVersionDisplayName(boolean includePreReleaseDescription) {
-        Matcher matcher = VERSION_DISPLAY_REGEX.matcher(versionName);
+        Matcher matcher = VERSION_DISPLAY_REGEX.matcher(version);
         matcher.find();
         String versionNumber = matcher.group(1);
         String preReleaseDescription = matcher.group(2);
@@ -87,73 +78,17 @@ public class ProjectRelease implements Comparable<ProjectRelease> {
         return versionNumber;
     }
 
-    public String getRefDocUrl() {
-        return refDocUrl;
-    }
-
     public boolean hasRefDocUrl() {
         return !refDocUrl.isEmpty();
-    }
-
-    public String getApiDocUrl() {
-        return apiDocUrl;
     }
 
     public boolean hasApiDocUrl() {
         return !apiDocUrl.isEmpty();
     }
 
-    public String getGroupId() {
-        return groupId;
-    }
-
-    public String getArtifactId() {
-        return artifactId;
-    }
-
-    public ProjectRepository getRepository() {
-        return repository;
-    }
-
     @Override
     public int compareTo(ProjectRelease other) {
-        return versionName.compareTo(other.versionName);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-
-        ProjectRelease that = (ProjectRelease) o;
-
-        if (!apiDocUrl.equals(that.apiDocUrl))
-            return false;
-        if (!refDocUrl.equals(that.refDocUrl))
-            return false;
-        if (releaseStatus != that.releaseStatus)
-            return false;
-        if (!versionName.equals(that.versionName))
-            return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = versionName.hashCode();
-        result = 31 * result + releaseStatus.hashCode();
-        result = 31 * result + refDocUrl.hashCode();
-        result = 31 * result + apiDocUrl.hashCode();
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "ProjectRelease{" + "versionName='" + versionName + '\'' + ", release=" + releaseStatus
-                + ", refDocUrl='" + refDocUrl + '\'' + ", apiDocUrl='" + apiDocUrl + '\'' + '}';
+        return version.compareTo(other.version);
     }
 
 }
