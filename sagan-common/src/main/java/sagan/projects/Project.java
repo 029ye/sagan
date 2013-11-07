@@ -17,4 +17,5 @@ public class Project {
     public boolean hasSite() {
         return !siteUrl.isEmpty();
     }
+
 }
