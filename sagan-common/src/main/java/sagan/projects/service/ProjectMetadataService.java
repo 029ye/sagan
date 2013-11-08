@@ -6,10 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import lombok.Data;
+import lombok.Getter;
+
+import static lombok.AccessLevel.NONE;
+
+@Data
 public class ProjectMetadataService {
-    private final Map<String, List<Project>> projectCategoryMap;
+
     private final String ghPagesBaseUrl;
     private final List<Project> projects;
+    private final @Getter(NONE) Map<String, List<Project>> projectCategoryMap;
 
     public ProjectMetadataService(Map<String, List<Project>> projectCategoryMap, String ghPagesBaseUrl) {
         this.projectCategoryMap = projectCategoryMap;
@@ -24,10 +31,6 @@ public class ProjectMetadataService {
         return projectCategoryMap.get(category);
     }
 
-    public List<Project> getProjects() {
-        return projects;
-    }
-
     public Project getProject(String id) {
         for (Project project : projects) {
             if (project.getId().equals(id)) {
@@ -37,7 +40,4 @@ public class ProjectMetadataService {
         return null;
     }
 
-    public String getGhPagesBaseUrl() {
-        return ghPagesBaseUrl;
-    }
 }
