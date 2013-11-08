@@ -1,8 +1,10 @@
 package sagan.guides;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class Tutorial extends AbstractGuide {
 
     private final int page;

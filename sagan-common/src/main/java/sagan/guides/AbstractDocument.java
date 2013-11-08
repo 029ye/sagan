@@ -1,16 +1,18 @@
 package sagan.guides;
 
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
+import lombok.Getter;
 
 import org.springframework.util.Assert;
 
-@RequiredArgsConstructor
+import static lombok.AccessLevel.NONE;
+
+@Data
 class AbstractDocument implements Document {
 
-    private final ContentProvider contentProvider;
-    @Setter private String content;
-    @Setter private String sidebar;
+    private final @Getter(NONE) ContentProvider contentProvider;
+    private String content;
+    private String sidebar;
 
     public String getContent() {
         if (content == null) {

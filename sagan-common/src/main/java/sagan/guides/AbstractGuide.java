@@ -1,7 +1,9 @@
 package sagan.guides;
 
+import lombok.Data;
 import lombok.Delegate;
 
+@Data
 class AbstractGuide extends AbstractDocument implements Guide {
 
     @Delegate
