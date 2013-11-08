@@ -6,7 +6,6 @@ sourceSets {
 }
 
 dependencies {
-    compile "org.projectlombok:lombok:1.12.2"
     compile "org.springframework:spring-context:${vSpringCore}"
     compile 'org.springframework.security:spring-security-core:3.2.0.RC1'
     compile 'org.springframework.social:spring-social-github:1.0.0.M4'

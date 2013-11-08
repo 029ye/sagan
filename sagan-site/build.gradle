@@ -17,7 +17,6 @@ springBoot {
 dependencies {
     compile project(':sagan-common')
 
-    compile "org.projectlombok:lombok:1.12.2"
     compile "org.springframework.boot:spring-boot-starter-web:${vSpringBoot}"
     compile "org.springframework.boot:spring-boot-starter-actuator:${vSpringBoot}"
     compile "org.springframework.boot:spring-boot-starter-security:${vSpringBoot}"

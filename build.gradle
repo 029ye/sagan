@@ -39,10 +39,36 @@ subprojects {
     }
 
     dependencies {
+        compile "org.projectlombok:lombok:1.12.2"
         compile 'org.slf4j:slf4j-api:1.7.5'
         testCompile "junit:junit:${vJunit}"
         testCompile 'org.hamcrest:hamcrest-library:1.3'
         testCompile 'org.mockito:mockito-core:1.9.5'
+    }
+
+    def srcDelomboked = 'build/src-delomboked'
+    def srcJava = 'src/main/java'
+
+    task delombok {
+        // delombok task may depend on other projects already being compiled
+        dependsOn configurations.compile.getTaskDependencyFromProjectDependency(true, "compileJava")
+
+        // Set up incremental build, must be made in the configuration phase (not doLast)
+        inputs.files file(srcJava)
+        outputs.dir file(srcDelomboked)
+
+        doLast {
+            def collection = files(configurations.compile)
+            def sumTree = collection + fileTree(dir: 'bin')
+
+            ant.taskdef(name: 'delombok', classname: 'lombok.delombok.ant.DelombokTask', classpath: configurations.compile.asPath)
+            ant.delombok(from:srcJava, to:srcDelomboked, classpath: sumTree.asPath)
+
+            copy {
+                from srcDelomboked
+                into srcJava
+            }
+        }
     }
 }
 
