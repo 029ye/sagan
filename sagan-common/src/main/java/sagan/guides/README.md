@@ -1,0 +1,3 @@
+### `package sagan.guides;`
+
+This package contains...
